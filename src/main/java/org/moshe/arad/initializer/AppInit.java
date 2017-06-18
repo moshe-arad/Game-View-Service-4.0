@@ -9,9 +9,11 @@ import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.KafkaUtils;
 import org.moshe.arad.kafka.consumers.ISimpleConsumer;
 import org.moshe.arad.kafka.consumers.commands.GetGameUpdateViewCommandConsumer;
+import org.moshe.arad.kafka.consumers.config.DiceRolledEventConfig;
 import org.moshe.arad.kafka.consumers.config.GameStartedEventConfig;
 import org.moshe.arad.kafka.consumers.config.GetGameUpdateViewCommandConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
+import org.moshe.arad.kafka.consumers.events.DiceRolledEventConsumer;
 import org.moshe.arad.kafka.consumers.events.GameStartedEventConsumer;
 import org.moshe.arad.kafka.events.GetGameUpdateViewAckEvent;
 import org.moshe.arad.kafka.events.InitGameRoomCompletedEvent;
@@ -40,6 +42,11 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	
 	@Autowired
 	private SimpleEventsProducer<GetGameUpdateViewAckEvent> getGameUpdateViewAckEventProducer;
+	
+	private DiceRolledEventConsumer diceRolledEventConsumer;
+	
+	@Autowired
+	private DiceRolledEventConfig diceRolledEventConfig;
 	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
@@ -70,7 +77,11 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			gameStartedEventConsumer = context.getBean(GameStartedEventConsumer.class);
 			initSingleConsumer(gameStartedEventConsumer, KafkaUtils.GAME_STARTED_EVENT_TOPIC, gameStartedEventConfig, null);
 			
-			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer));
+			diceRolledEventConsumer = context.getBean(DiceRolledEventConsumer.class);
+			initSingleConsumer(diceRolledEventConsumer, KafkaUtils.DICE_ROLLED_EVENT_TOPIC, diceRolledEventConfig, null);
+			
+			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
+					diceRolledEventConsumer));
 		}
 	}
 

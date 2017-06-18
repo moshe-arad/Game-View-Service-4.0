@@ -44,5 +44,7 @@ public class KafkaUtils {
 	public static final String GET_GAME_UPDATE_VIEW_GROUP = "GetGameUpdateViewGroup1";
 	public static final String GET_GAME_UPDATE_VIEW_COMMAND_TOPIC = "Get-Game-Update-View-Command";
 	public static final String GET_GAME_UPDATE_VIEW_ACK_EVENT_TOPIC = "Get-Game-Update-View-Ack-Event";
+	public static final String DICE_ROLLED_EVENT_GROUP = "DiceRolledEventGroup2";
+	public static final String DICE_ROLLED_EVENT_TOPIC = "Dice-Rolled-Event";
 	
 }
