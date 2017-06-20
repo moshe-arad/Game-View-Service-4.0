@@ -60,4 +60,6 @@ public class KafkaUtils {
 	public static final String WHITE_ATE_BLACK_PAWN_EVENT_GROUP = "WhiteAteBlackPawnEventGroup2";
 	public static final String BLACK_ATE_WHITE_PAWN_EVENT_TOPIC = "Black-Ate-White-Pawn-Event";
 	public static final String WHITE_ATE_BLACK_PAWN_EVENT_TOPIC = "White-Ate-Black-Pawn-Event";
+	public static final String USER_MADE_MOVE_EVENT_GROUP = "UserMadeMoveEventGroup2";
+	public static final String USER_MADE_MOVE_EVENT_TOPIC = "User-Made-Move-Event";
 }

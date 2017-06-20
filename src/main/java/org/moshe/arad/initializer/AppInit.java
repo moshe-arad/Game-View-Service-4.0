@@ -17,6 +17,7 @@ import org.moshe.arad.kafka.consumers.config.GameStartedEventConfig;
 import org.moshe.arad.kafka.consumers.config.GetGameUpdateViewCommandConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
 import org.moshe.arad.kafka.consumers.config.UserMadeInvalidMoveEventConfig;
+import org.moshe.arad.kafka.consumers.config.UserMadeMoveEventConfig;
 import org.moshe.arad.kafka.consumers.config.WhiteAteBlackPawnEventConfig;
 import org.moshe.arad.kafka.consumers.config.WhitePawnCameBackEventConfig;
 import org.moshe.arad.kafka.consumers.config.WhitePawnTakenOutEventConfig;
@@ -26,6 +27,7 @@ import org.moshe.arad.kafka.consumers.events.BlackPawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.DiceRolledEventConsumer;
 import org.moshe.arad.kafka.consumers.events.GameStartedEventConsumer;
 import org.moshe.arad.kafka.consumers.events.UserMadeInvalidMoveEventConsumer;
+import org.moshe.arad.kafka.consumers.events.UserMadeMoveEventConsumer;
 import org.moshe.arad.kafka.consumers.events.WhiteAteBlackPawnEventConsumer;
 import org.moshe.arad.kafka.consumers.events.WhitePawnCameBackEventConsumer;
 import org.moshe.arad.kafka.consumers.events.WhitePawnTakenOutEventConsumer;
@@ -97,6 +99,11 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	@Autowired
 	private WhiteAteBlackPawnEventConfig whiteAteBlackPawnEventConfig;
 	
+	private UserMadeMoveEventConsumer userMadeMoveEventConsumer;
+	
+	@Autowired
+	private UserMadeMoveEventConfig userMadeMoveEventConfig;
+	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -150,6 +157,9 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			whiteAteBlackPawnEventConsumer = context.getBean(WhiteAteBlackPawnEventConsumer.class);
 			initSingleConsumer(whiteAteBlackPawnEventConsumer, KafkaUtils.WHITE_ATE_BLACK_PAWN_EVENT_TOPIC, whiteAteBlackPawnEventConfig, null);
 			
+			userMadeMoveEventConsumer = context.getBean(UserMadeMoveEventConsumer.class);
+			initSingleConsumer(userMadeMoveEventConsumer, KafkaUtils.USER_MADE_MOVE_EVENT_TOPIC, userMadeInvalidMoveEventConfig, null);
+			
 			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
 					diceRolledEventConsumer,
 					userMadeInvalidMoveEventConsumer,
@@ -158,7 +168,8 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 					whitePawnTakenOutEventConsumer,
 					blackPawnTakenOutEventConsumer,
 					blackAteWhitePawnEventConsumer,
-					whiteAteBlackPawnEventConsumer));
+					whiteAteBlackPawnEventConsumer,
+					userMadeMoveEventConsumer));
 		}
 	}
 
