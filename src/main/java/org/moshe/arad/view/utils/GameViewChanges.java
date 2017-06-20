@@ -13,6 +13,8 @@ public class GameViewChanges {
 	private Boolean isToShowRollDiceBtnToBlack;
 	private Boolean isWhiteTurn;
 	private Boolean isBlackTurn;
+	private Boolean isWhiteReturned;
+	private Boolean isBlackReturned;
 	
 	public GameViewChanges() {
 	
@@ -75,5 +77,21 @@ public class GameViewChanges {
 
 	public void setIsBlackTurn(Boolean isBlackTurn) {
 		this.isBlackTurn = isBlackTurn;
+	}
+
+	public Boolean getIsWhiteReturned() {
+		return isWhiteReturned;
+	}
+
+	public void setIsWhiteReturned(Boolean isWhiteReturned) {
+		this.isWhiteReturned = isWhiteReturned;
+	}
+
+	public Boolean getIsBlackReturned() {
+		return isBlackReturned;
+	}
+
+	public void setIsBlackReturned(Boolean isBlackReturned) {
+		this.isBlackReturned = isBlackReturned;
 	}
 }
