@@ -9,18 +9,24 @@ import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.KafkaUtils;
 import org.moshe.arad.kafka.consumers.ISimpleConsumer;
 import org.moshe.arad.kafka.consumers.commands.GetGameUpdateViewCommandConsumer;
+import org.moshe.arad.kafka.consumers.config.BlackAteWhitePawnEventConfig;
 import org.moshe.arad.kafka.consumers.config.BlackPawnCameBackEventConfig;
+import org.moshe.arad.kafka.consumers.config.BlackPawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.DiceRolledEventConfig;
 import org.moshe.arad.kafka.consumers.config.GameStartedEventConfig;
 import org.moshe.arad.kafka.consumers.config.GetGameUpdateViewCommandConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
 import org.moshe.arad.kafka.consumers.config.UserMadeInvalidMoveEventConfig;
+import org.moshe.arad.kafka.consumers.config.WhiteAteBlackPawnEventConfig;
 import org.moshe.arad.kafka.consumers.config.WhitePawnCameBackEventConfig;
 import org.moshe.arad.kafka.consumers.config.WhitePawnTakenOutEventConfig;
+import org.moshe.arad.kafka.consumers.events.BlackAteWhitePawnEventConsumer;
 import org.moshe.arad.kafka.consumers.events.BlackPawnCameBackEventConsumer;
+import org.moshe.arad.kafka.consumers.events.BlackPawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.DiceRolledEventConsumer;
 import org.moshe.arad.kafka.consumers.events.GameStartedEventConsumer;
 import org.moshe.arad.kafka.consumers.events.UserMadeInvalidMoveEventConsumer;
+import org.moshe.arad.kafka.consumers.events.WhiteAteBlackPawnEventConsumer;
 import org.moshe.arad.kafka.consumers.events.WhitePawnCameBackEventConsumer;
 import org.moshe.arad.kafka.consumers.events.WhitePawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.events.GetGameUpdateViewAckEvent;
@@ -76,6 +82,21 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	@Autowired
 	private WhitePawnTakenOutEventConfig whitePawnTakenOutEventConfig;
 	
+	private BlackPawnTakenOutEventConsumer blackPawnTakenOutEventConsumer;
+	
+	@Autowired
+	private BlackPawnTakenOutEventConfig blackPawnTakenOutEventConfig;
+	
+	private BlackAteWhitePawnEventConsumer blackAteWhitePawnEventConsumer;
+	
+	@Autowired
+	private BlackAteWhitePawnEventConfig blackAteWhitePawnEventConfig;
+	
+	private WhiteAteBlackPawnEventConsumer whiteAteBlackPawnEventConsumer;
+	
+	@Autowired
+	private WhiteAteBlackPawnEventConfig whiteAteBlackPawnEventConfig;
+	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -120,12 +141,24 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			whitePawnTakenOutEventConsumer = context.getBean(WhitePawnTakenOutEventConsumer.class);
 			initSingleConsumer(whitePawnTakenOutEventConsumer, KafkaUtils.WHITE_PAWN_TAKEN_OUT_EVENT_TOPIC, whitePawnTakenOutEventConfig, null);
 			
+			blackPawnTakenOutEventConsumer = context.getBean(BlackPawnTakenOutEventConsumer.class);
+			initSingleConsumer(blackPawnTakenOutEventConsumer, KafkaUtils.BLACK_PAWN_TAKEN_OUT_EVENT_TOPIC, blackPawnTakenOutEventConfig, null);
+			
+			blackAteWhitePawnEventConsumer = context.getBean(BlackAteWhitePawnEventConsumer.class);
+			initSingleConsumer(blackAteWhitePawnEventConsumer, KafkaUtils.BLACK_ATE_WHITE_PAWN_EVENT_TOPIC, blackAteWhitePawnEventConfig, null);
+			
+			whiteAteBlackPawnEventConsumer = context.getBean(WhiteAteBlackPawnEventConsumer.class);
+			initSingleConsumer(whiteAteBlackPawnEventConsumer, KafkaUtils.WHITE_ATE_BLACK_PAWN_EVENT_TOPIC, whiteAteBlackPawnEventConfig, null);
+			
 			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
 					diceRolledEventConsumer,
 					userMadeInvalidMoveEventConsumer,
 					whitePawnCameBackEventConsumer,
 					blackPawnCameBackEventConsumer,
-					whitePawnTakenOutEventConsumer));
+					whitePawnTakenOutEventConsumer,
+					blackPawnTakenOutEventConsumer,
+					blackAteWhitePawnEventConsumer,
+					whiteAteBlackPawnEventConsumer));
 		}
 	}
 
