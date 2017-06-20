@@ -15,6 +15,8 @@ public class GameViewChanges {
 	private Boolean isBlackTurn;
 	private Boolean isWhiteReturned;
 	private Boolean isBlackReturned;
+	private Boolean isWhiteTookOut;
+	private Boolean isBlackTookOut;
 	
 	public GameViewChanges() {
 	
@@ -93,5 +95,21 @@ public class GameViewChanges {
 
 	public void setIsBlackReturned(Boolean isBlackReturned) {
 		this.isBlackReturned = isBlackReturned;
+	}
+
+	public Boolean getIsWhiteTookOut() {
+		return isWhiteTookOut;
+	}
+
+	public void setIsWhiteTookOut(Boolean isWhiteTookOut) {
+		this.isWhiteTookOut = isWhiteTookOut;
+	}
+
+	public Boolean getIsBlackTookOut() {
+		return isBlackTookOut;
+	}
+
+	public void setIsBlackTookOut(Boolean isBlackTookOut) {
+		this.isBlackTookOut = isBlackTookOut;
 	}
 }

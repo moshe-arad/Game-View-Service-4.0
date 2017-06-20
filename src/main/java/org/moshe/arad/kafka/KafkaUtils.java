@@ -50,5 +50,8 @@ public class KafkaUtils {
 	public static final String USER_MADE_INVALID_MOVE_EVENT_TOPIC = "User-Made-Invalid-Move-Event";
 	public static final String WHITE_PAWN_CAME_BACK_EVENT_GROUP = "WhitePawnCameBackEventGroup2";
 	public static final String WHITE_PAWN_CAME_BACK_EVENT_TOPIC = "White-Pawn-Came-Back-Event";
-	
+	public static final String BLACK_PAWN_CAME_BACK_EVENT_GROUP = "BlackPawnCameBackEventGroup2";
+	public static final String BLACK_PAWN_CAME_BACK_EVENT_TOPIC = "Black-Pawn-Came-Back-Event";
+	public static final String WHITE_PAWN_TAKEN_OUT_EVENT_GROUP = "WhitePawnTakenOutEventGroup2";
+	public static final String WHITE_PAWN_TAKEN_OUT_EVENT_TOPIC = "White-Pawn-Taken-Out-Event";
 }
