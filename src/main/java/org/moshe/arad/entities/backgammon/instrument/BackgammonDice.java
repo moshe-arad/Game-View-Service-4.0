@@ -1,12 +1,11 @@
-package org.moshe.arad.entities;
+package org.moshe.arad.entities.backgammon.instrument;
 
 import java.util.Random;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
+
 public class BackgammonDice implements Dice {
 
 	public static final int NONE = 0;

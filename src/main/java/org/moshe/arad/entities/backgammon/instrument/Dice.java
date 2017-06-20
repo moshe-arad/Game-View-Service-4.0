@@ -1,4 +1,4 @@
-package org.moshe.arad.entities;
+package org.moshe.arad.entities.backgammon.instrument;
 
 public interface Dice {
 

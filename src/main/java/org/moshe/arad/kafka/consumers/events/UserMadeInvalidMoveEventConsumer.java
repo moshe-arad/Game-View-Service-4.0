@@ -7,6 +7,7 @@ import org.moshe.arad.entities.GameRoom;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.DiceRolledEvent;
+import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
 import org.moshe.arad.view.utils.GameView;
 import org.moshe.arad.view.utils.GameViewChanges;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 @Scope("prototype")
-public class DiceRolledEventConsumer extends SimpleEventsConsumer {
+public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
 	
 	@Autowired
 	private GameView gameView;
@@ -30,24 +31,22 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 	
 	private ConsumerToProducerQueue consumerToProducerQueue;
 	
-	Logger logger = LoggerFactory.getLogger(DiceRolledEventConsumer.class);
+	Logger logger = LoggerFactory.getLogger(UserMadeInvalidMoveEventConsumer.class);
 	
-	public DiceRolledEventConsumer() {
+	public UserMadeInvalidMoveEventConsumer() {
 	}
 	
 	@Override
 	public void consumerOperations(ConsumerRecord<String, String> record) {
-		DiceRolledEvent diceRolledEvent = convertJsonBlobIntoEvent(record.value());
+		UserMadeInvalidMoveEvent userMadeInvalidMoveEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		BackgammonDice firstDice = userMadeInvalidMoveEvent.getFirstDice();
+		BackgammonDice secondDice = userMadeInvalidMoveEvent.getSecondDice();
 		
 		try{
-			GameRoom room = diceRolledEvent.getGameRoom();
-			BackgammonDice firstDice = diceRolledEvent.getFirstDice();
-			BackgammonDice secondDice = diceRolledEvent.getSecondDice();
-			
-			if(room.getOpenBy().equals(diceRolledEvent.getUsername())){
-				gameViewChanges.setMessageToWhite(room.getOpenBy() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
-				gameViewChanges.setMessageToBlack(room.getOpenBy() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+			if(userMadeInvalidMoveEvent.isWhite()){
+				gameViewChanges.setMessageToWhite("White You made an invalid move, Try again. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
+				gameViewChanges.setMessageToBlack("White Player tried to made an invalid move. He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
@@ -55,9 +54,9 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsWhiteTurn(true);
 				gameViewChanges.setIsBlackTurn(false);
 			}
-			else if(room.getSecondPlayer().equals(diceRolledEvent.getUsername())){
-				gameViewChanges.setMessageToWhite(room.getSecondPlayer() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
-				gameViewChanges.setMessageToBlack(room.getSecondPlayer() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
+			else if(!userMadeInvalidMoveEvent.isWhite()){
+				gameViewChanges.setMessageToWhite("Black Player tried to made an invalid move. He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+				gameViewChanges.setMessageToBlack("Black You made an invalid move, Try again. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
@@ -66,7 +65,7 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsBlackTurn(true);
 			}
 			
-			gameView.markNeedToUpdateGroupUsers(gameViewChanges, diceRolledEvent.getGameRoom().getName());
+			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeInvalidMoveEvent.getGameRoomName());
 		}
 		catch(Exception e){
 			logger.error("Failed to add new game room to view...");
@@ -75,10 +74,10 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 		}
 	}
 	
-	private DiceRolledEvent convertJsonBlobIntoEvent(String JsonBlob){
+	private UserMadeInvalidMoveEvent convertJsonBlobIntoEvent(String JsonBlob){
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(JsonBlob, DiceRolledEvent.class);
+			return objectMapper.readValue(JsonBlob, UserMadeInvalidMoveEvent.class);
 		} catch (IOException e) {
 			logger.error("Falied to convert Json blob into Event...");
 			logger.error(e.getMessage());

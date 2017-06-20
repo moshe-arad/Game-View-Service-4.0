@@ -13,8 +13,10 @@ import org.moshe.arad.kafka.consumers.config.DiceRolledEventConfig;
 import org.moshe.arad.kafka.consumers.config.GameStartedEventConfig;
 import org.moshe.arad.kafka.consumers.config.GetGameUpdateViewCommandConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
+import org.moshe.arad.kafka.consumers.config.UserMadeInvalidMoveEventConfig;
 import org.moshe.arad.kafka.consumers.events.DiceRolledEventConsumer;
 import org.moshe.arad.kafka.consumers.events.GameStartedEventConsumer;
+import org.moshe.arad.kafka.consumers.events.UserMadeInvalidMoveEventConsumer;
 import org.moshe.arad.kafka.events.GetGameUpdateViewAckEvent;
 import org.moshe.arad.kafka.events.InitGameRoomCompletedEvent;
 import org.moshe.arad.kafka.producers.ISimpleProducer;
@@ -48,6 +50,11 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	@Autowired
 	private DiceRolledEventConfig diceRolledEventConfig;
 	
+	private UserMadeInvalidMoveEventConsumer userMadeInvalidMoveEventConsumer;
+	
+	@Autowired
+	private UserMadeInvalidMoveEventConfig userMadeInvalidMoveEventConfig;
+	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -80,8 +87,12 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			diceRolledEventConsumer = context.getBean(DiceRolledEventConsumer.class);
 			initSingleConsumer(diceRolledEventConsumer, KafkaUtils.DICE_ROLLED_EVENT_TOPIC, diceRolledEventConfig, null);
 			
+			userMadeInvalidMoveEventConsumer = context.getBean(UserMadeInvalidMoveEventConsumer.class);
+			initSingleConsumer(userMadeInvalidMoveEventConsumer, KafkaUtils.USER_MADE_INVALID_MOVE_EVENT_TOPIC, userMadeInvalidMoveEventConfig, null);
+			
 			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
-					diceRolledEventConsumer));
+					diceRolledEventConsumer,
+					userMadeInvalidMoveEventConsumer));
 		}
 	}
 

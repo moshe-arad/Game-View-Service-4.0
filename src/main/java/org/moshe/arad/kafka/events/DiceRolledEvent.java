@@ -1,7 +1,7 @@
 package org.moshe.arad.kafka.events;
 
-import org.moshe.arad.entities.BackgammonDice;
 import org.moshe.arad.entities.GameRoom;
+import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
