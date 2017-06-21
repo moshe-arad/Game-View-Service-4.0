@@ -66,4 +66,8 @@ public class KafkaUtils {
 	public static final String LAST_MOVE_WHITE_PAWN_CAME_BACK_EVENT_TOPIC = "Last-Move-White-Pawn-Came-Back-Event";
 	public static final String TURN_NOT_PASSED_WHITE_PAWN_CAME_BACK_EVENT_GROUP = "TurnNotPassedWhitePawnCameBackEventGroup2";
 	public static final String TURN_NOT_PASSED_WHITE_PAWN_CAME_BACK_EVENT_TOPIC = "Turn-Not-Passed-White-Pawn-Came-Back-Event";
+	public static final String LAST_MOVE_BLACK_PAWN_CAME_BACK_EVENT_GROUP = "LastMoveBlackPawnCameBackEventGroup2";
+	public static final String LAST_MOVE_BLACK_PAWN_CAME_BACK_EVENT_TOPIC = "Last-Move-Black-Pawn-Came-Back-Event";
+	public static final String TURN_NOT_PASSED_BLACK_PAWN_CAME_BACK_EVENT_GROUP = "TurnNotPassedBlackPawnCameBackEventGroup2";
+	public static final String TURN_NOT_PASSED_BLACK_PAWN_CAME_BACK_EVENT_TOPIC = "Turn-Not-Passed-Black-Pawn-Came-Back-Event";
 }
