@@ -16,10 +16,12 @@ import org.moshe.arad.kafka.consumers.config.DiceRolledEventConfig;
 import org.moshe.arad.kafka.consumers.config.GameStartedEventConfig;
 import org.moshe.arad.kafka.consumers.config.GetGameUpdateViewCommandConfig;
 import org.moshe.arad.kafka.consumers.config.LastMoveBlackPawnCameBackEventConfig;
+import org.moshe.arad.kafka.consumers.config.LastMoveBlackPawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.LastMoveWhitePawnCameBackEventConfig;
 import org.moshe.arad.kafka.consumers.config.LastMoveWhitePawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
 import org.moshe.arad.kafka.consumers.config.TurnNotPassedBlackPawnCameBackEventConfig;
+import org.moshe.arad.kafka.consumers.config.TurnNotPassedBlackPawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.TurnNotPassedWhitePawnCameBackEventConfig;
 import org.moshe.arad.kafka.consumers.config.TurnNotPassedWhitePawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.UserMadeInvalidMoveEventConfig;
@@ -33,9 +35,11 @@ import org.moshe.arad.kafka.consumers.events.BlackPawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.DiceRolledEventConsumer;
 import org.moshe.arad.kafka.consumers.events.GameStartedEventConsumer;
 import org.moshe.arad.kafka.consumers.events.LastMoveBlackPawnCameBackEventConsumer;
+import org.moshe.arad.kafka.consumers.events.LastMoveBlackPawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.LastMoveWhitePawnCameBackEventConsumer;
 import org.moshe.arad.kafka.consumers.events.LastMoveWhitePawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedBlackPawnCameBackEventConsumer;
+import org.moshe.arad.kafka.consumers.events.TurnNotPassedBlackPawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedWhitePawnCameBackEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedWhitePawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.UserMadeInvalidMoveEventConsumer;
@@ -146,6 +150,16 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	@Autowired
 	private TurnNotPassedWhitePawnTakenOutEventConfig turnNotPassedWhitePawnTakenOutEventConfig;
 	
+	private LastMoveBlackPawnTakenOutEventConsumer lastMoveBlackPawnTakenOutEventConsumer;
+	
+	@Autowired
+	private LastMoveBlackPawnTakenOutEventConfig lastMoveBlackPawnTakenOutEventConfig;
+	
+	private TurnNotPassedBlackPawnTakenOutEventConsumer turnNotPassedBlackPawnTakenOutEventConsumer;
+	
+	@Autowired
+	private TurnNotPassedBlackPawnTakenOutEventConfig turnNotPassedBlackPawnTakenOutEventConfig;
+	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -220,6 +234,12 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			turnNotPassedWhitePawnTakenOutEventConsumer = context.getBean(TurnNotPassedWhitePawnTakenOutEventConsumer.class);
 			initSingleConsumer(turnNotPassedWhitePawnTakenOutEventConsumer, KafkaUtils.TURN_NOT_PASSED_WHITE_PAWN_TAKEN_OUT_EVENT_TOPIC, turnNotPassedWhitePawnTakenOutEventConfig, null);
 			
+			lastMoveBlackPawnTakenOutEventConsumer = context.getBean(LastMoveBlackPawnTakenOutEventConsumer.class);
+			initSingleConsumer(lastMoveBlackPawnTakenOutEventConsumer, KafkaUtils.LAST_MOVE_BLACK_PAWN_TAKEN_OUT_EVENT_TOPIC, lastMoveBlackPawnTakenOutEventConfig, null);
+			
+			turnNotPassedBlackPawnTakenOutEventConsumer = context.getBean(TurnNotPassedBlackPawnTakenOutEventConsumer.class);
+			initSingleConsumer(turnNotPassedBlackPawnTakenOutEventConsumer, KafkaUtils.TURN_NOT_PASSED_BLACK_PAWN_TAKEN_OUT_EVENT_TOPIC, turnNotPassedBlackPawnTakenOutEventConfig, null);
+			
 			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
 					diceRolledEventConsumer,
 					userMadeInvalidMoveEventConsumer,
@@ -235,7 +255,9 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 					lastMoveBlackPawnCameBackEventConsumer,
 					turnNotPassedBlackPawnCameBackEventConsumer,
 					lastMoveWhitePawnTakenOutEventConsumer,
-					turnNotPassedWhitePawnTakenOutEventConsumer));
+					turnNotPassedWhitePawnTakenOutEventConsumer,
+					lastMoveBlackPawnTakenOutEventConsumer,
+					turnNotPassedBlackPawnTakenOutEventConsumer));
 		}
 	}
 

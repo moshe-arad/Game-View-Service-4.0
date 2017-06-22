@@ -8,6 +8,6 @@ public class TurnNotPassedWhitePawnTakenOutEventConfig extends SimpleConsumerCon
 
 	public TurnNotPassedWhitePawnTakenOutEventConfig() {
 		super();
-		super.getProperties().put("group.id", KafkaUtils.LAST_MOVE_WHITE_PAWN_TAKEN_OUT_EVENT_GROUP);
+		super.getProperties().put("group.id", KafkaUtils.TURN_NOT_PASSED_WHITE_PAWN_TAKEN_OUT_EVENT_GROUP);
 	}
 }

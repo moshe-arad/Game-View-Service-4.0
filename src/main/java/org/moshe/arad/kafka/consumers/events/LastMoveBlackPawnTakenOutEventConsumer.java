@@ -3,12 +3,15 @@ package org.moshe.arad.kafka.consumers.events;
 import java.io.IOException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.moshe.arad.entities.GameRoom;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
-import org.moshe.arad.kafka.events.BlackPawnCameBackEvent;
-import org.moshe.arad.kafka.events.LastMoveBlackPawnCameBackEvent;
-import org.moshe.arad.kafka.events.TurnNotPassedBlackPawnCameBackEvent;
+import org.moshe.arad.kafka.events.BlackPawnTakenOutEvent;
+import org.moshe.arad.kafka.events.DiceRolledEvent;
+import org.moshe.arad.kafka.events.LastMoveBlackPawnTakenOutEvent;
+import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
 import org.moshe.arad.kafka.events.WhitePawnCameBackEvent;
+import org.moshe.arad.kafka.events.WhitePawnTakenOutEvent;
 import org.moshe.arad.view.utils.GameView;
 import org.moshe.arad.view.utils.GameViewChanges;
 import org.slf4j.Logger;
@@ -22,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 @Scope("prototype")
-public class TurnNotPassedBlackPawnCameBackEventConsumer extends SimpleEventsConsumer {
+public class LastMoveBlackPawnTakenOutEventConsumer extends SimpleEventsConsumer {
 	
 	@Autowired
 	private GameView gameView;
@@ -32,29 +35,29 @@ public class TurnNotPassedBlackPawnCameBackEventConsumer extends SimpleEventsCon
 	
 	private ConsumerToProducerQueue consumerToProducerQueue;
 	
-	Logger logger = LoggerFactory.getLogger(TurnNotPassedBlackPawnCameBackEventConsumer.class);
+	Logger logger = LoggerFactory.getLogger(LastMoveBlackPawnTakenOutEventConsumer.class);
 	
-	public TurnNotPassedBlackPawnCameBackEventConsumer() {
+	public LastMoveBlackPawnTakenOutEventConsumer() {
 	}
 	
 	@Override
 	public void consumerOperations(ConsumerRecord<String, String> record) {
-		TurnNotPassedBlackPawnCameBackEvent turnNotPassedBlackPawnCameBackEvent = convertJsonBlobIntoEvent(record.value());
+		LastMoveBlackPawnTakenOutEvent lastMoveBlackPawnTakenOutEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
 		
 		try{
-			gameViewChanges.setMessageToWhite("Black Player successfuly managed to return your black pawn back into the game. Black will keep his turn because you do not have play options.");
-			gameViewChanges.setMessageToBlack("Black you successfuly managed to return your black pawn back into the game. turn will keep yours because white does not have play options.");
+			gameViewChanges.setMessageToWhite("Black Player successfuly managed to take out his black pawn out of the game. turn will pass to you.");
+			gameViewChanges.setMessageToBlack("Black you successfuly managed to take out your black pawn out of the game. turn will pass to next player.");
 			
-			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
-			gameViewChanges.setIsToShowRollDiceBtnToBlack(true);
+			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
+			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
 			
-			gameViewChanges.setIsWhiteTurn(false);
-			gameViewChanges.setIsBlackTurn(true);
+			gameViewChanges.setIsWhiteTurn(true);
+			gameViewChanges.setIsBlackTurn(false);
 			
-			gameViewChanges.setIsBlackReturned(true);
+			gameViewChanges.setIsBlackTookOut(true);
 			
-			gameView.markNeedToUpdateGroupUsers(gameViewChanges, turnNotPassedBlackPawnCameBackEvent.getGameRoomName());
+			gameView.markNeedToUpdateGroupUsers(gameViewChanges, lastMoveBlackPawnTakenOutEvent.getGameRoomName());
 		}
 		catch(Exception e){
 			logger.error("Failed to add new game room to view...");
@@ -63,10 +66,10 @@ public class TurnNotPassedBlackPawnCameBackEventConsumer extends SimpleEventsCon
 		}
 	}
 	
-	private TurnNotPassedBlackPawnCameBackEvent convertJsonBlobIntoEvent(String JsonBlob){
+	private LastMoveBlackPawnTakenOutEvent convertJsonBlobIntoEvent(String JsonBlob){
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(JsonBlob, TurnNotPassedBlackPawnCameBackEvent.class);
+			return objectMapper.readValue(JsonBlob, LastMoveBlackPawnTakenOutEvent.class);
 		} catch (IOException e) {
 			logger.error("Falied to convert Json blob into Event...");
 			logger.error(e.getMessage());
