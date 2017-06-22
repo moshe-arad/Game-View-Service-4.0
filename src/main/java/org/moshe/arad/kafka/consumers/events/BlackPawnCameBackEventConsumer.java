@@ -54,6 +54,8 @@ public class BlackPawnCameBackEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsBlackReturned(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackPawnCameBackEvent.getGameRoomName());
 		}
 		catch(Exception e){

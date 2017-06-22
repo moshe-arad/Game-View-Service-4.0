@@ -64,6 +64,8 @@ public class UserMadeMoveEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsBlackTurn(true);
 			}
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeMoveEvent.getGameRoomName());
 		}
 		catch(Exception e){

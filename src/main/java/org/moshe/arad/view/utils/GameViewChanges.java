@@ -19,6 +19,7 @@ public class GameViewChanges {
 	private Boolean isBlackTookOut;
 	private Boolean isBlackAteWhite;
 	private Boolean isWhiteAteBlack;
+	private Boolean isToApplyMove;
 	
 	public GameViewChanges() {
 	
@@ -129,5 +130,13 @@ public class GameViewChanges {
 
 	public void setIsWhiteAteBlack(Boolean isWhiteAteBlack) {
 		this.isWhiteAteBlack = isWhiteAteBlack;
+	}
+
+	public Boolean getIsToApplyMove() {
+		return isToApplyMove;
+	}
+
+	public void setIsToApplyMove(Boolean isToApplyMove) {
+		this.isToApplyMove = isToApplyMove;
 	}
 }

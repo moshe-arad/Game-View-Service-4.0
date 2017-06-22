@@ -55,6 +55,8 @@ public class TurnNotPassedWhitePawnCameBackEventConsumer extends SimpleEventsCon
 			
 			gameViewChanges.setIsWhiteReturned(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, turnNotPassedWhitePawnCameBackEvent.getGameRoomName());
 		}
 		catch(Exception e){

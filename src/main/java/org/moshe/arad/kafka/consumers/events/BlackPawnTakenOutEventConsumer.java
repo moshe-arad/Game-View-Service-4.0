@@ -58,6 +58,8 @@ public class BlackPawnTakenOutEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsBlackTookOut(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackPawnTakenOutEvent.getGameRoomName());
 		}
 		catch(Exception e){

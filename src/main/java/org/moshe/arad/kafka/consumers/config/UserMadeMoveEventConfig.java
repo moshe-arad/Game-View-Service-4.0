@@ -8,6 +8,6 @@ public class UserMadeMoveEventConfig extends SimpleConsumerConfig{
 
 	public UserMadeMoveEventConfig() {
 		super();
-		super.getProperties().put("group.id", KafkaUtils.USER_MADE_MOVE_EVENT_GROUP);
+		super.getProperties().put("group.id", KafkaUtils.USER_MADE_LAST_MOVE_EVENT_GROUP);
 	}
 }

@@ -3,11 +3,11 @@ package org.moshe.arad.kafka.consumers.events;
 import java.io.IOException;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.moshe.arad.entities.GameRoom;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
-import org.moshe.arad.kafka.events.DiceRolledEvent;
 import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
+import org.moshe.arad.kafka.events.UserMadeLastMoveEvent;
+import org.moshe.arad.kafka.events.UserMadeMoveEvent;
 import org.moshe.arad.view.utils.GameView;
 import org.moshe.arad.view.utils.GameViewChanges;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 @Scope("prototype")
-public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
+public class TurnNotPassedUserMadeMoveEventConsumer extends SimpleEventsConsumer {
 	
 	@Autowired
 	private GameView gameView;
@@ -31,43 +31,41 @@ public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
 	
 	private ConsumerToProducerQueue consumerToProducerQueue;
 	
-	Logger logger = LoggerFactory.getLogger(UserMadeInvalidMoveEventConsumer.class);
+	Logger logger = LoggerFactory.getLogger(TurnNotPassedUserMadeMoveEventConsumer.class);
 	
-	public UserMadeInvalidMoveEventConsumer() {
+	public TurnNotPassedUserMadeMoveEventConsumer() {
 	}
 	
 	@Override
 	public void consumerOperations(ConsumerRecord<String, String> record) {
-		UserMadeInvalidMoveEvent userMadeInvalidMoveEvent = convertJsonBlobIntoEvent(record.value());
+		UserMadeLastMoveEvent userMadeLastMoveEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
-		BackgammonDice firstDice = userMadeInvalidMoveEvent.getFirstDice();
-		BackgammonDice secondDice = userMadeInvalidMoveEvent.getSecondDice();
 		
 		try{
-			if(userMadeInvalidMoveEvent.isWhite()){
-				gameViewChanges.setMessageToWhite("White You made an invalid move, Try again. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
-				gameViewChanges.setMessageToBlack("White Player tried to made an invalid move. He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+			if(userMadeLastMoveEvent.isWhite()){
+				gameViewChanges.setMessageToWhite("White You made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = "+ userMadeLastMoveEvent.getTo() +", turn will keep yours because black does not have play options.");
+				gameViewChanges.setMessageToBlack("White Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +", White will keep his turn because you do not have play options.");
 				
-				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
+				gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
 				
 				gameViewChanges.setIsWhiteTurn(true);
 				gameViewChanges.setIsBlackTurn(false);
 			}
-			else if(!userMadeInvalidMoveEvent.isWhite()){
-				gameViewChanges.setMessageToWhite("Black Player tried to made an invalid move. He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
-				gameViewChanges.setMessageToBlack("Black You made an invalid move, Try again. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
+			else if(!userMadeLastMoveEvent.isWhite()){
+				gameViewChanges.setMessageToWhite("Black Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +". Black will keep his turn because you do not have play options.");
+				gameViewChanges.setMessageToBlack("Black You made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = "+ userMadeLastMoveEvent.getTo() +". turn will keep yours because white does not have play options.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
-				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
+				gameViewChanges.setIsToShowRollDiceBtnToBlack(true);
 				
 				gameViewChanges.setIsWhiteTurn(false);
 				gameViewChanges.setIsBlackTurn(true);
 			}
 			
-			gameViewChanges.setIsToApplyMove(false);
+			gameViewChanges.setIsToApplyMove(true);
 			
-			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeInvalidMoveEvent.getGameRoomName());
+			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeLastMoveEvent.getGameRoomName());
 		}
 		catch(Exception e){
 			logger.error("Failed to add new game room to view...");
@@ -76,10 +74,10 @@ public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
 		}
 	}
 	
-	private UserMadeInvalidMoveEvent convertJsonBlobIntoEvent(String JsonBlob){
+	private UserMadeLastMoveEvent convertJsonBlobIntoEvent(String JsonBlob){
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(JsonBlob, UserMadeInvalidMoveEvent.class);
+			return objectMapper.readValue(JsonBlob, UserMadeLastMoveEvent.class);
 		} catch (IOException e) {
 			logger.error("Falied to convert Json blob into Event...");
 			logger.error(e.getMessage());

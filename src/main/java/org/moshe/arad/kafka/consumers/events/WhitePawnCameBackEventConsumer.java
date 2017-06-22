@@ -56,6 +56,8 @@ public class WhitePawnCameBackEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsWhiteReturned(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, whitePawnCameBackEvent.getGameRoomName());
 		}
 		catch(Exception e){

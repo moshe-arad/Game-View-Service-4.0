@@ -57,6 +57,8 @@ public class WhitePawnTakenOutEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsWhiteTookOut(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, whitePawnTakenOutEvent.getGameRoomName());
 		}
 		catch(Exception e){
