@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.moshe.arad.entities.backgammon.json.deserializers.BackgammonBoardDeserializer;
+import org.moshe.arad.entities.backgammon.json.serializers.BackgammonBoardSerializer;
 import org.moshe.arad.entities.backgammon.move.BackgammonBoardLocation;
 import org.moshe.arad.entities.backgammon.move.BoardLocation;
 import org.moshe.arad.entities.backgammon.move.Move;
@@ -15,8 +17,14 @@ import org.moshe.arad.entities.backgammon.player.Player;
 import org.moshe.arad.entities.backgammon.turn.BackgammonTurn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@Component
+@Scope("prototype")
 public class BackgammonBoard implements Board {
 
 	public static final int LENGTH = 24;
@@ -303,14 +311,62 @@ public class BackgammonBoard implements Board {
 		eatenWhites.add(pawn);
 	}
 	
-	public int getBlackEatenSize(){
+	public int blackEatenSize(){
 		return eatenBlacks.size();
 	}
 	
-	public int getWhiteEatenSize(){
+	public int whiteEatenSize(){
 		return eatenWhites.size();
 	}
-	
+
+	public List<Deque<BackgammonPawn>> getBoard() {
+		return board;
+	}
+
+	public void setBoard(List<Deque<BackgammonPawn>> board) {
+		this.board = board;
+	}
+
+	public LinkedList<BackgammonPawn> getEatenBlacks() {
+		return eatenBlacks;
+	}
+
+	public void setEatenBlacks(LinkedList<BackgammonPawn> eatenBlacks) {
+		this.eatenBlacks = eatenBlacks;
+	}
+
+	public LinkedList<BackgammonPawn> getEatenWhites() {
+		return eatenWhites;
+	}
+
+	public void setEatenWhites(LinkedList<BackgammonPawn> eatenWhites) {
+		this.eatenWhites = eatenWhites;
+	}
+
+	public static int getLength() {
+		return LENGTH;
+	}
+
+	public static int getMaxColumn() {
+		return MAX_COLUMN;
+	}
+
+	public static int getEatenWhite() {
+		return EATEN_WHITE;
+	}
+
+	public static int getEatenBlack() {
+		return EATEN_BLACK;
+	}
+
+	public static int getOutWhite() {
+		return OUT_WHITE;
+	}
+
+	public static int getOutBlack() {
+		return OUT_BLACK;
+	}
+
 	private boolean isCanSetOnDestination(int locationIndex, BackgammonPawn backgammonPawn) {
 		return (board.get(locationIndex).size() > 0) && (board.get(locationIndex).peek() != null) && (!board.get(locationIndex).peek().equals(backgammonPawn)) ? false : true;
 	}
