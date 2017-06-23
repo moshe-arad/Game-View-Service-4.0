@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.moshe.arad.entities.backgammon.json.deserializers.BackgammonBoardDeserializer;
-import org.moshe.arad.entities.backgammon.json.serializers.BackgammonBoardSerializer;
 import org.moshe.arad.entities.backgammon.move.BackgammonBoardLocation;
 import org.moshe.arad.entities.backgammon.move.BoardLocation;
 import org.moshe.arad.entities.backgammon.move.Move;
@@ -19,9 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Component
 @Scope("prototype")
