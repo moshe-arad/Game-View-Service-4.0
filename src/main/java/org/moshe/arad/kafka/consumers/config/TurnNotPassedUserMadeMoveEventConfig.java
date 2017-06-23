@@ -8,6 +8,6 @@ public class TurnNotPassedUserMadeMoveEventConfig extends SimpleConsumerConfig{
 
 	public TurnNotPassedUserMadeMoveEventConfig() {
 		super();
-		super.getProperties().put("group.id", KafkaUtils.USER_MADE_MOVE_EVENT_GROUP);
+		super.getProperties().put("group.id", KafkaUtils.TURN_NOT_PASSED_USER_MADE_MOVE_EVENT_GROUP);
 	}
 }

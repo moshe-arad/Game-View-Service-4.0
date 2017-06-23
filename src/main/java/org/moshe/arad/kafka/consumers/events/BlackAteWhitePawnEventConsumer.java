@@ -55,6 +55,8 @@ public class BlackAteWhitePawnEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsBlackAteWhite(true);
 			
+			gameViewChanges.setIsToApplyMove(true);
+			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackAteWhitePawnEvent.getGameRoomName());
 		}
 		catch(Exception e){
