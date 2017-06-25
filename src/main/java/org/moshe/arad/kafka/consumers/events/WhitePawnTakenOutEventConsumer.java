@@ -1,10 +1,12 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.GameRoom;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.DiceRolledEvent;
 import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
@@ -44,6 +46,7 @@ public class WhitePawnTakenOutEventConsumer extends SimpleEventsConsumer {
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
 		BackgammonDice firstDice = whitePawnTakenOutEvent.getFirstDice();
 		BackgammonDice secondDice = whitePawnTakenOutEvent.getSecondDice();
+		List<BoardItemJson> boardItemJsons = whitePawnTakenOutEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to take out your white pawn out of the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
@@ -58,7 +61,9 @@ public class WhitePawnTakenOutEventConsumer extends SimpleEventsConsumer {
 			gameViewChanges.setIsWhiteTookOut(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
+			gameViewChanges.setFrom(whitePawnTakenOutEvent.getFrom());
+			gameViewChanges.setTo(whitePawnTakenOutEvent.getTo());
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(whitePawnTakenOutEvent.getFrom()).getCount() + 1);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, whitePawnTakenOutEvent.getGameRoomName());
 		}
 		catch(Exception e){

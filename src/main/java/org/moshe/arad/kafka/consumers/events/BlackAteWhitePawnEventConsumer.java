@@ -1,9 +1,11 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.BlackAteWhitePawnEvent;
 import org.moshe.arad.kafka.events.BlackPawnCameBackEvent;
@@ -42,6 +44,7 @@ public class BlackAteWhitePawnEventConsumer extends SimpleEventsConsumer {
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
 		BackgammonDice firstDice = blackAteWhitePawnEvent.getFirstDice();
 		BackgammonDice secondDice = blackAteWhitePawnEvent.getSecondDice();
+		List<BoardItemJson> boardItemJsons = blackAteWhitePawnEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("Bad news White player. Black player ate one of your pawns. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move... ");
@@ -55,6 +58,10 @@ public class BlackAteWhitePawnEventConsumer extends SimpleEventsConsumer {
 			
 			gameViewChanges.setIsBlackAteWhite(true);
 			
+			gameViewChanges.setFrom(blackAteWhitePawnEvent.getFrom());
+			gameViewChanges.setTo(blackAteWhitePawnEvent.getTo());
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(blackAteWhitePawnEvent.getFrom()).getCount() + 1);
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(blackAteWhitePawnEvent.getTo()).getCount());
 			gameViewChanges.setIsToApplyMove(true);
 			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackAteWhitePawnEvent.getGameRoomName());

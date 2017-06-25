@@ -1,9 +1,11 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
 import org.moshe.arad.kafka.events.UserMadeLastMoveEvent;
@@ -40,6 +42,7 @@ public class UserMadeLastMoveEventConsumer extends SimpleEventsConsumer {
 	public void consumerOperations(ConsumerRecord<String, String> record) {
 		UserMadeLastMoveEvent userMadeLastMoveEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		List<BoardItemJson> boardItemJsons = userMadeLastMoveEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			if(userMadeLastMoveEvent.isWhite()){
@@ -63,8 +66,11 @@ public class UserMadeLastMoveEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsBlackTurn(false);
 			}
 			
+			gameViewChanges.setFrom(userMadeLastMoveEvent.getFrom());
+			gameViewChanges.setTo(userMadeLastMoveEvent.getTo());
 			gameViewChanges.setIsToApplyMove(true);
-			
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(userMadeLastMoveEvent.getFrom()).getCount() + 1);
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(userMadeLastMoveEvent.getTo()).getCount() - 1);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeLastMoveEvent.getGameRoomName());
 		}
 		catch(Exception e){

@@ -1,9 +1,11 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
 import org.moshe.arad.kafka.events.UserMadeMoveEvent;
@@ -41,6 +43,7 @@ public class UserMadeMoveEventConsumer extends SimpleEventsConsumer {
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
 		BackgammonDice firstDice = userMadeMoveEvent.getFirstDice();
 		BackgammonDice secondDice = userMadeMoveEvent.getSecondDice();
+		List<BoardItemJson> boardItemJsons = userMadeMoveEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			if(userMadeMoveEvent.isWhite()){
@@ -65,7 +68,10 @@ public class UserMadeMoveEventConsumer extends SimpleEventsConsumer {
 			}
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
+			gameViewChanges.setFrom(userMadeMoveEvent.getFrom());
+			gameViewChanges.setTo(userMadeMoveEvent.getTo());
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(userMadeMoveEvent.getFrom()).getCount() + 1);
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(userMadeMoveEvent.getTo()).getCount() - 1);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeMoveEvent.getGameRoomName());
 		}
 		catch(Exception e){

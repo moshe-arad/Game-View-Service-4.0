@@ -1,9 +1,11 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.BlackPawnCameBackEvent;
 import org.moshe.arad.kafka.events.WhitePawnCameBackEvent;
@@ -41,6 +43,7 @@ public class BlackPawnCameBackEventConsumer extends SimpleEventsConsumer {
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
 		BackgammonDice firstDice = blackPawnCameBackEvent.getFirstDice();
 		BackgammonDice secondDice = blackPawnCameBackEvent.getSecondDice();
+		List<BoardItemJson> boardItemJsons = blackPawnCameBackEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("Black you successfuly managed to return your black pawn back into the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
@@ -55,6 +58,9 @@ public class BlackPawnCameBackEventConsumer extends SimpleEventsConsumer {
 			gameViewChanges.setIsBlackReturned(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
+			gameViewChanges.setFrom(blackPawnCameBackEvent.getFrom());
+			gameViewChanges.setTo(blackPawnCameBackEvent.getTo());
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(blackPawnCameBackEvent.getTo()).getCount() - 1);
 			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackPawnCameBackEvent.getGameRoomName());
 		}

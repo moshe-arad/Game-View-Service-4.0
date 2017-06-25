@@ -65,6 +65,8 @@ public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsBlackTurn(true);
 			}
 			
+			gameViewChanges.setFrom(userMadeInvalidMoveEvent.getFrom());
+			gameViewChanges.setTo(userMadeInvalidMoveEvent.getTo());
 			gameViewChanges.setIsToApplyMove(false);
 			
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, userMadeInvalidMoveEvent.getGameRoomName());

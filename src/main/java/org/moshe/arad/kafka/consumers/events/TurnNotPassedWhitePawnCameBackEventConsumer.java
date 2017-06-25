@@ -1,10 +1,12 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.GameRoom;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.DiceRolledEvent;
 import org.moshe.arad.kafka.events.TurnNotPassedWhitePawnCameBackEvent;
@@ -42,6 +44,7 @@ public class TurnNotPassedWhitePawnCameBackEventConsumer extends SimpleEventsCon
 	public void consumerOperations(ConsumerRecord<String, String> record) {
 		TurnNotPassedWhitePawnCameBackEvent turnNotPassedWhitePawnCameBackEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		List<BoardItemJson> boardItemJsons = turnNotPassedWhitePawnCameBackEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to return your white pawn back into the game. turn will keep yours because black does not have play options.");
@@ -56,7 +59,9 @@ public class TurnNotPassedWhitePawnCameBackEventConsumer extends SimpleEventsCon
 			gameViewChanges.setIsWhiteReturned(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
+			gameViewChanges.setFrom(turnNotPassedWhitePawnCameBackEvent.getFrom());
+			gameViewChanges.setTo(turnNotPassedWhitePawnCameBackEvent.getTo());
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(turnNotPassedWhitePawnCameBackEvent.getTo()).getCount() - 1);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, turnNotPassedWhitePawnCameBackEvent.getGameRoomName());
 		}
 		catch(Exception e){

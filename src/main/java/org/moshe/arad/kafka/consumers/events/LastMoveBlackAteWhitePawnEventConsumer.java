@@ -1,13 +1,13 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.BlackAteWhitePawnEvent;
-import org.moshe.arad.kafka.events.BlackPawnCameBackEvent;
-import org.moshe.arad.kafka.events.WhitePawnCameBackEvent;
+import org.moshe.arad.kafka.events.LastMoveBlackAteWhitePawnEvent;
 import org.moshe.arad.view.utils.GameView;
 import org.moshe.arad.view.utils.GameViewChanges;
 import org.slf4j.Logger;
@@ -38,8 +38,9 @@ public class LastMoveBlackAteWhitePawnEventConsumer extends SimpleEventsConsumer
 	
 	@Override
 	public void consumerOperations(ConsumerRecord<String, String> record) {
-		BlackAteWhitePawnEvent blackAteWhitePawnEvent = convertJsonBlobIntoEvent(record.value());
+		LastMoveBlackAteWhitePawnEvent lastMoveBlackAteWhitePawnEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		List<BoardItemJson> boardItemJsons = lastMoveBlackAteWhitePawnEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("Bad news White player. Black player ate one of your pawns.  turn will pass to you.");
@@ -54,8 +55,11 @@ public class LastMoveBlackAteWhitePawnEventConsumer extends SimpleEventsConsumer
 			gameViewChanges.setIsBlackAteWhite(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
-			gameView.markNeedToUpdateGroupUsers(gameViewChanges, blackAteWhitePawnEvent.getGameRoomName());
+			gameViewChanges.setFrom(lastMoveBlackAteWhitePawnEvent.getFrom());
+			gameViewChanges.setTo(lastMoveBlackAteWhitePawnEvent.getTo());
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(lastMoveBlackAteWhitePawnEvent.getFrom()).getCount() + 1);
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(lastMoveBlackAteWhitePawnEvent.getTo()).getCount());
+			gameView.markNeedToUpdateGroupUsers(gameViewChanges, lastMoveBlackAteWhitePawnEvent.getGameRoomName());
 		}
 		catch(Exception e){
 			logger.error("Failed to add new game room to view...");
@@ -64,10 +68,10 @@ public class LastMoveBlackAteWhitePawnEventConsumer extends SimpleEventsConsumer
 		}
 	}
 	
-	private BlackAteWhitePawnEvent convertJsonBlobIntoEvent(String JsonBlob){
+	private LastMoveBlackAteWhitePawnEvent convertJsonBlobIntoEvent(String JsonBlob){
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(JsonBlob, BlackAteWhitePawnEvent.class);
+			return objectMapper.readValue(JsonBlob, LastMoveBlackAteWhitePawnEvent.class);
 		} catch (IOException e) {
 			logger.error("Falied to convert Json blob into Event...");
 			logger.error(e.getMessage());

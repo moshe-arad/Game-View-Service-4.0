@@ -1,9 +1,11 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
 import org.moshe.arad.kafka.events.LastMoveWhitePawnTakenOutEvent;
 import org.moshe.arad.view.utils.GameView;
@@ -38,6 +40,7 @@ public class LastMoveWhitePawnTakenOutEventConsumer extends SimpleEventsConsumer
 	public void consumerOperations(ConsumerRecord<String, String> record) {
 		LastMoveWhitePawnTakenOutEvent lastMoveWhitePawnTakenOutEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		List<BoardItemJson> boardItemJsons = lastMoveWhitePawnTakenOutEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to take out your white pawn out of the game. turn will pass to next player.");
@@ -52,7 +55,9 @@ public class LastMoveWhitePawnTakenOutEventConsumer extends SimpleEventsConsumer
 			gameViewChanges.setIsWhiteTookOut(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
+			gameViewChanges.setFrom(lastMoveWhitePawnTakenOutEvent.getFrom());
+			gameViewChanges.setTo(lastMoveWhitePawnTakenOutEvent.getTo());
+			gameViewChanges.setColumnSizeOnFrom(boardItemJsons.get(lastMoveWhitePawnTakenOutEvent.getFrom()).getCount() + 1);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, lastMoveWhitePawnTakenOutEvent.getGameRoomName());
 		}
 		catch(Exception e){

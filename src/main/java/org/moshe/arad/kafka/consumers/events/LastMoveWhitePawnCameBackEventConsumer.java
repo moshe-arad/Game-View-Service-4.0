@@ -1,13 +1,12 @@
 package org.moshe.arad.kafka.consumers.events;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.moshe.arad.entities.GameRoom;
-import org.moshe.arad.entities.backgammon.instrument.BackgammonDice;
+import org.moshe.arad.entities.backgammon.instrument.json.BoardItemJson;
 import org.moshe.arad.kafka.ConsumerToProducerQueue;
-import org.moshe.arad.kafka.events.DiceRolledEvent;
-import org.moshe.arad.kafka.events.UserMadeInvalidMoveEvent;
+import org.moshe.arad.kafka.events.LastMoveWhitePawnCameBackEvent;
 import org.moshe.arad.kafka.events.WhitePawnCameBackEvent;
 import org.moshe.arad.view.utils.GameView;
 import org.moshe.arad.view.utils.GameViewChanges;
@@ -39,8 +38,9 @@ public class LastMoveWhitePawnCameBackEventConsumer extends SimpleEventsConsumer
 	
 	@Override
 	public void consumerOperations(ConsumerRecord<String, String> record) {
-		WhitePawnCameBackEvent whitePawnCameBackEvent = convertJsonBlobIntoEvent(record.value());
+		LastMoveWhitePawnCameBackEvent lastMoveWhitePawnCameBackEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
+		List<BoardItemJson> boardItemJsons = lastMoveWhitePawnCameBackEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to return your white pawn back into the game. turn will pass to next player.");
@@ -55,8 +55,10 @@ public class LastMoveWhitePawnCameBackEventConsumer extends SimpleEventsConsumer
 			gameViewChanges.setIsWhiteReturned(true);
 			
 			gameViewChanges.setIsToApplyMove(true);
-			
-			gameView.markNeedToUpdateGroupUsers(gameViewChanges, whitePawnCameBackEvent.getGameRoomName());
+			gameViewChanges.setFrom(lastMoveWhitePawnCameBackEvent.getFrom());
+			gameViewChanges.setTo(lastMoveWhitePawnCameBackEvent.getTo());
+			gameViewChanges.setColumnSizeOnTo(boardItemJsons.get(lastMoveWhitePawnCameBackEvent.getTo()).getCount() - 1);
+			gameView.markNeedToUpdateGroupUsers(gameViewChanges, lastMoveWhitePawnCameBackEvent.getGameRoomName());
 		}
 		catch(Exception e){
 			logger.error("Failed to add new game room to view...");
@@ -65,10 +67,10 @@ public class LastMoveWhitePawnCameBackEventConsumer extends SimpleEventsConsumer
 		}
 	}
 	
-	private WhitePawnCameBackEvent convertJsonBlobIntoEvent(String JsonBlob){
+	private LastMoveWhitePawnCameBackEvent convertJsonBlobIntoEvent(String JsonBlob){
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(JsonBlob, WhitePawnCameBackEvent.class);
+			return objectMapper.readValue(JsonBlob, LastMoveWhitePawnCameBackEvent.class);
 		} catch (IOException e) {
 			logger.error("Falied to convert Json blob into Event...");
 			logger.error(e.getMessage());
