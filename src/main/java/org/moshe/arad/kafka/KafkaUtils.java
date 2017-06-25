@@ -90,4 +90,6 @@ public class KafkaUtils {
 	public static final String USER_MADE_LAST_MOVE_EVENT_TOPIC = "User-Made-Last-Move-Event";
 	public static final String TURN_NOT_PASSED_USER_MADE_MOVE_EVENT_GROUP = "TurnNotPassedUserMadeMoveEventGroup2";
 	public static final String TURN_NOT_PASSED_USER_MADE_MOVE_EVENT_TOPIC = "Turn-Not-Passed-User-Made-Move-Event";
+	public static final String WHITE_PAWN_CAME_BACK_AND_ATE_BLACK_PAWN_EVENT_GROUP = "WhitePawnCameBackAndAteBlackPawnEventGroup2";
+	public static final String WHITE_PAWN_CAME_BACK_AND_ATE_BLACK_PAWN_EVENT_TOPIC = "White-Pawn-Came-Back-And-Ate-Black-Pawn-Event";
 }
