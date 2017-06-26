@@ -57,7 +57,7 @@ public class TurnNotPassedBlackPawnCameBackAndAteWhitePawnEventConsumer extends 
 			gameViewChanges.setIsBlackTurn(true);
 			
 			gameViewChanges.setIsBlackReturned(true);
-			
+			gameViewChanges.setIsBlackAteWhite(true);
 			gameViewChanges.setIsToApplyMove(true);
 			gameViewChanges.setFrom(turnNotPassedBlackPawnCameBackAndAteWhitePawnEvent.getFrom());
 			gameViewChanges.setTo(turnNotPassedBlackPawnCameBackAndAteWhitePawnEvent.getTo());

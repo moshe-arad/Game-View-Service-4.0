@@ -59,7 +59,7 @@ public class LastMoveWhitePawnCameBackAndAteBlackPawnEventConsumer extends Simpl
 			gameViewChanges.setIsBlackTurn(true);
 			
 			gameViewChanges.setIsWhiteReturned(true);
-			
+			gameViewChanges.setIsWhiteAteBlack(true);
 			gameViewChanges.setIsToApplyMove(true);
 			gameViewChanges.setFrom(whitePawnCameBackAndAteBlackPawnEvent.getFrom());
 			gameViewChanges.setTo(whitePawnCameBackAndAteBlackPawnEvent.getTo());
