@@ -106,4 +106,6 @@ public class KafkaUtils {
 	public static final String DICE_ROLLED_CAN_NOT_PLAY_EVENT_TOPIC = "Dice-Rolled-Can-Not-Play-Event";
 	public static final String WINNER_MOVE_MADE_EVENT_GROUP = "WinnerMoveMadeEventGroup2";
 	public static final String WINNER_MOVE_MADE_EVENT_TOPIC = "Winner-Move-Made-Event";
+	public static final String LOGGED_OUT_OPENBY_LEFT_FIRST_GAME_STOPPED_EVENT_GROUP = "LoggedOutOpenbyLeftFirstGameStoppedEventGroup2";
+	public static final String LOGGED_OUT_OPENBY_LEFT_FIRST_GAME_STOPPED_EVENT_TOPIC = "Logged-Out-Openby-Left-First-Game-Stopped-Event";
 }
