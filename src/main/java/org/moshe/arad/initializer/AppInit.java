@@ -26,6 +26,7 @@ import org.moshe.arad.kafka.consumers.config.LastMoveWhitePawnCameBackAndAteBlac
 import org.moshe.arad.kafka.consumers.config.LastMoveWhitePawnCameBackEventConfig;
 import org.moshe.arad.kafka.consumers.config.LastMoveWhitePawnTakenOutEventConfig;
 import org.moshe.arad.kafka.consumers.config.LoggedOutOpenByLeftFirstGameStoppedEventConfig;
+import org.moshe.arad.kafka.consumers.config.LoggedOutSecondLeftFirstGameStoppedEventConfig;
 import org.moshe.arad.kafka.consumers.config.SimpleConsumerConfig;
 import org.moshe.arad.kafka.consumers.config.TurnNotPassedBlackAteWhitePawnEventConfig;
 import org.moshe.arad.kafka.consumers.config.TurnNotPassedBlackPawnCameBackAndAteWhitePawnEventConfig;
@@ -60,6 +61,7 @@ import org.moshe.arad.kafka.consumers.events.LastMoveWhitePawnCameBackAndAteBlac
 import org.moshe.arad.kafka.consumers.events.LastMoveWhitePawnCameBackEventConsumer;
 import org.moshe.arad.kafka.consumers.events.LastMoveWhitePawnTakenOutEventConsumer;
 import org.moshe.arad.kafka.consumers.events.LoggedOutOpenByLeftFirstGameStoppedEventConsumer;
+import org.moshe.arad.kafka.consumers.events.LoggedOutSecondLeftFirstGameStoppedEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedBlackAteWhitePawnEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedBlackPawnCameBackAndAteWhitePawnEventConsumer;
 import org.moshe.arad.kafka.consumers.events.TurnNotPassedBlackPawnCameBackEventConsumer;
@@ -265,6 +267,11 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 	@Autowired
 	private LoggedOutOpenByLeftFirstGameStoppedEventConfig loggedOutOpenByLeftFirstGameStoppedEventConfig;
 	
+	private LoggedOutSecondLeftFirstGameStoppedEventConsumer loggedOutSecondLeftFirstGameStoppedEventConsumer;
+	
+	@Autowired
+	private LoggedOutSecondLeftFirstGameStoppedEventConfig loggedOutSecondLeftFirstGameStoppedEventConfig;
+	
 	private ConsumerToProducerQueue getGameUpdateViewQueue;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(6);
@@ -390,6 +397,9 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 			loggedOutOpenByLeftFirstGameStoppedEventConsumer = context.getBean(LoggedOutOpenByLeftFirstGameStoppedEventConsumer.class);
 			initSingleConsumer(loggedOutOpenByLeftFirstGameStoppedEventConsumer, KafkaUtils.LOGGED_OUT_OPENBY_LEFT_FIRST_GAME_STOPPED_EVENT_TOPIC, loggedOutOpenByLeftFirstGameStoppedEventConfig, null);
 			
+			loggedOutSecondLeftFirstGameStoppedEventConsumer = context.getBean(LoggedOutSecondLeftFirstGameStoppedEventConsumer.class);
+			initSingleConsumer(loggedOutSecondLeftFirstGameStoppedEventConsumer, KafkaUtils.LOGGED_OUT_SECOND_LEFT_FIRST_GAME_STOPPED_EVENT_TOPIC, loggedOutSecondLeftFirstGameStoppedEventConfig, null);
+			
 			executeProducersAndConsumers(Arrays.asList(gameStartedEventConsumer,
 					diceRolledEventConsumer,
 					userMadeInvalidMoveEventConsumer,
@@ -422,7 +432,8 @@ public class AppInit implements ApplicationContextAware, IAppInitializer {
 					turnNotPassedBlackPawnCameBackAndAteWhitePawnEventConsumer,
 					diceRolledCanNotPlayEventConsumer,
 					winnerMoveMadeEventConsumer,
-					loggedOutOpenByLeftFirstGameStoppedEventConsumer));
+					loggedOutOpenByLeftFirstGameStoppedEventConsumer,
+					loggedOutSecondLeftFirstGameStoppedEventConsumer));
 		}
 	}
 
