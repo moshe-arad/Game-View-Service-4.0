@@ -45,6 +45,7 @@ public class TurnNotPassedWhitePawnTakenOutEventConsumer extends SimpleEventsCon
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to take out your white pawn out of the game.  turn will keep yours because black does not have play options.");
 			gameViewChanges.setMessageToBlack("White Player successfuly managed to take out his white pawn out of the game. White will keep his turn because you do not have play options.");
+			gameViewChanges.setMessageToWatcher("White has successfuly managed to take out his white pawn out of the game.  turn will keep to be white's because black does not have play options.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

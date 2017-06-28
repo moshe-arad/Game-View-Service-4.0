@@ -52,6 +52,7 @@ public class BlackPawnTakenOutEventConsumer extends SimpleEventsConsumer {
 		try{
 			gameViewChanges.setMessageToWhite("Black Player successfuly managed to take out his black pawn out of the game. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
 			gameViewChanges.setMessageToBlack("Black you successfuly managed to take out your black pawn out of the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
+			gameViewChanges.setMessageToWatcher("Black player took out one of his pawns, Black player still need to make a move. Earlier Black rolled " + firstDice.getValue() + ":" + secondDice.getValue());
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

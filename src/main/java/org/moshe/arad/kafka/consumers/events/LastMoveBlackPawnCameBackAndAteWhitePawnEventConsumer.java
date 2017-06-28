@@ -41,13 +41,12 @@ public class LastMoveBlackPawnCameBackAndAteWhitePawnEventConsumer extends Simpl
 	public void consumerOperations(ConsumerRecord<String, String> record) {
 		LastMoveBlackPawnCameBackAndAteWhitePawnEvent lastMoveBlackPawnCameBackAndAteWhitePawnEvent = convertJsonBlobIntoEvent(record.value());
 		GameViewChanges gameViewChanges = context.getBean(GameViewChanges.class);
-		BackgammonDice firstDice = lastMoveBlackPawnCameBackAndAteWhitePawnEvent.getFirstDice();
-		BackgammonDice secondDice = lastMoveBlackPawnCameBackAndAteWhitePawnEvent.getSecondDice();
 		List<BoardItemJson> boardItemJsons = lastMoveBlackPawnCameBackAndAteWhitePawnEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
-			gameViewChanges.setMessageToWhite("Black you successfuly managed to return your black pawn back into the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
-			gameViewChanges.setMessageToBlack("Black Player successfuly managed to return your black pawn back into the game. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+			gameViewChanges.setMessageToWhite("Black has successfuly managed to return his black pawn back into the game, and ate on of your pawns . turn has passed to you White.");
+			gameViewChanges.setMessageToBlack("Black Player you successfuly managed to return your black pawn back into the game, and you ate one of white's pawns. turn has passed to white.");
+			gameViewChanges.setMessageToWatcher("Black Player has successfuly managed to return his black pawn back into the game, and ate one of white's pawns. turn has passed to white.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

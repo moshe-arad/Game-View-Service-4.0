@@ -48,6 +48,7 @@ public class BlackPawnCameBackEventConsumer extends SimpleEventsConsumer {
 		try{
 			gameViewChanges.setMessageToWhite("Black you successfuly managed to return your black pawn back into the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
 			gameViewChanges.setMessageToBlack("Black Player successfuly managed to return your black pawn back into the game. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+			gameViewChanges.setMessageToWatcher("Black pawn came back to the board, Black player still need to make a move. Earlier Black rolled " + firstDice.getValue() + ":" + secondDice.getValue());
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

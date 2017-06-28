@@ -49,6 +49,7 @@ public class DiceRolledCanNotPlayEventConsumer extends SimpleEventsConsumer {
 			if(room.getOpenBy().equals(diceRolledCanNotPlayEvent.getUsername())){
 				gameViewChanges.setMessageToWhite(room.getOpenBy() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", unfortunately you don't have any moves to make, turn will pass to other player...");
 				gameViewChanges.setMessageToBlack(room.getOpenBy() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", White player don't have any moves to make, turn will pass to you...");
+				gameViewChanges.setMessageToWatcher(room.getOpenBy() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", White player don't have any moves to make, turn will pass to black player...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(true);
@@ -59,6 +60,7 @@ public class DiceRolledCanNotPlayEventConsumer extends SimpleEventsConsumer {
 			else if(room.getSecondPlayer().equals(diceRolledCanNotPlayEvent.getUsername())){
 				gameViewChanges.setMessageToWhite(room.getSecondPlayer() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", Black player don't have any moves to make, turn will pass to you...");
 				gameViewChanges.setMessageToBlack(room.getSecondPlayer() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", unfortunately you don't have any moves to make, turn will pass to other player...");
+				gameViewChanges.setMessageToWatcher(room.getSecondPlayer() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", Black player don't have any moves to make, turn will pass to White player...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

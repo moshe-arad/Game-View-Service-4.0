@@ -50,6 +50,7 @@ public class WinnerMoveMadeEventConsumer extends SimpleEventsConsumer {
 			if(winnerMoveMadeEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("White You made a winner move, You are the Winner!!!");
 				gameViewChanges.setMessageToBlack("White Player made a winner move, he's the Winner, You Lost!!!");
+				gameViewChanges.setMessageToWatcher("White Player made a winner move, he's the Winner.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
@@ -60,6 +61,7 @@ public class WinnerMoveMadeEventConsumer extends SimpleEventsConsumer {
 			else if(!winnerMoveMadeEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("Black Player made a winner move, he's the Winner, You Lost!!!");
 				gameViewChanges.setMessageToBlack("Black You made a winner move, You are the Winner!!!");
+				gameViewChanges.setMessageToWatcher("Black Player made a winner move, he's the Winner.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

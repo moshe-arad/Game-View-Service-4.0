@@ -65,6 +65,8 @@ public class UserMadeInvalidMoveEventConsumer extends SimpleEventsConsumer {
 				gameViewChanges.setIsBlackTurn(true);
 			}
 			
+			gameViewChanges.setMessageToWatcher("An invalid move was made, wait for retry...");
+			
 			gameViewChanges.setFrom(userMadeInvalidMoveEvent.getFrom());
 			gameViewChanges.setTo(userMadeInvalidMoveEvent.getTo());
 			gameViewChanges.setIsToApplyMove(false);

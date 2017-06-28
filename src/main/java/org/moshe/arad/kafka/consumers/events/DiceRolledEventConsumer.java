@@ -48,6 +48,7 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 			if(room.getOpenBy().equals(diceRolledEvent.getUsername())){
 				gameViewChanges.setMessageToWhite(room.getOpenBy() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
 				gameViewChanges.setMessageToBlack(room.getOpenBy() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+				gameViewChanges.setMessageToWatcher(room.getOpenBy() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
@@ -58,7 +59,8 @@ public class DiceRolledEventConsumer extends SimpleEventsConsumer {
 			else if(room.getSecondPlayer().equals(diceRolledEvent.getUsername())){
 				gameViewChanges.setMessageToWhite(room.getSecondPlayer() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
 				gameViewChanges.setMessageToBlack(room.getSecondPlayer() + " You rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
-				
+				gameViewChanges.setMessageToWatcher(room.getSecondPlayer() + " Player has rolled the dice with result of " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+						
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
 				

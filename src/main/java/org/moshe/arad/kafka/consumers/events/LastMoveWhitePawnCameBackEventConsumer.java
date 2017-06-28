@@ -45,6 +45,7 @@ public class LastMoveWhitePawnCameBackEventConsumer extends SimpleEventsConsumer
 		try{
 			gameViewChanges.setMessageToWhite("White you successfuly managed to return your white pawn back into the game. turn will pass to next player.");
 			gameViewChanges.setMessageToBlack("White Player successfuly managed to return your white pawn back into the game. turn will pass to you.");
+			gameViewChanges.setMessageToWatcher("White has successfuly managed to return his white pawn back into the game. turn will pass to next player.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(true);

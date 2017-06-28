@@ -48,6 +48,7 @@ public class TurnNotPassedBlackAteWhitePawnEventConsumer extends SimpleEventsCon
 		try{
 			gameViewChanges.setMessageToWhite("Bad news White player. Black player ate one of your pawns.  Black will keep his turn because you do not have play options.");
 			gameViewChanges.setMessageToBlack("Black Player you successfuly ate one of white's pawns. turn will keep yours because white does not have play options.");
+			gameViewChanges.setMessageToBlack("Black Player has successfuly ate one of white's pawns. Black will keep his turn because white do not have play options.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(true);

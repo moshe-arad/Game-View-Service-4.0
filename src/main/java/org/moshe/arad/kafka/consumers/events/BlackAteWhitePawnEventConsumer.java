@@ -49,6 +49,7 @@ public class BlackAteWhitePawnEventConsumer extends SimpleEventsConsumer {
 		try{
 			gameViewChanges.setMessageToWhite("Bad news White player. Black player ate one of your pawns. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move... ");
 			gameViewChanges.setMessageToBlack("Black Player you successfuly ate one of white's pawns. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
+			gameViewChanges.setMessageToWatcher("Black player ate white player pawn, Black player still need to make a move. Earlier Black rolled " + firstDice.getValue() + ":" + secondDice.getValue());
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

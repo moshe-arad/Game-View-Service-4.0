@@ -46,6 +46,7 @@ public class SecondLeftFirstGameStoppedEventConsumer extends SimpleEventsConsume
 		
 		try{
 			gameViewChanges.setMessageToWhite("Game stopped, Black player left the game...");
+			gameViewChanges.setMessageToWatcher("Game stopped, Black player left the game...");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

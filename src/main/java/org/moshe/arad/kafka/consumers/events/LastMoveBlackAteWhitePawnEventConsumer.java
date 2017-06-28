@@ -45,6 +45,7 @@ public class LastMoveBlackAteWhitePawnEventConsumer extends SimpleEventsConsumer
 		try{
 			gameViewChanges.setMessageToWhite("Bad news White player. Black player ate one of your pawns.  turn will pass to you.");
 			gameViewChanges.setMessageToBlack("Black Player you successfuly ate one of white's pawns. turn will pass to next player.");
+			gameViewChanges.setMessageToWatcher("Black Player has successfuly ate one of white's pawns. turn will pass to next player.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

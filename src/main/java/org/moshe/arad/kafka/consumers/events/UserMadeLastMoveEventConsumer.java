@@ -48,6 +48,7 @@ public class UserMadeLastMoveEventConsumer extends SimpleEventsConsumer {
 			if(userMadeLastMoveEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("White You made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = "+ userMadeLastMoveEvent.getTo() +", turn will pass to next player.");
 				gameViewChanges.setMessageToBlack("White Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +", turn will pass to you.");
+				gameViewChanges.setMessageToWatcher("White Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +", turn will pass to next player.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(true);
@@ -58,6 +59,7 @@ public class UserMadeLastMoveEventConsumer extends SimpleEventsConsumer {
 			else if(!userMadeLastMoveEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("Black Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +". turn will pass to you.");
 				gameViewChanges.setMessageToBlack("Black You made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = "+ userMadeLastMoveEvent.getTo() +". turn will pass to next player.");
+				gameViewChanges.setMessageToWatcher("Black Player made a move, from column = " + userMadeLastMoveEvent.getFrom() + ", to column = " + userMadeLastMoveEvent.getTo() +". turn will pass to next player.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

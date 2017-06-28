@@ -42,6 +42,7 @@ public class GameStartedEventConsumer extends SimpleEventsConsumer {
 			logger.info("Will mark messages for display...");
 			gameViewChanges.setMessageToWhite("Hello, and welcome to Arad's Backgammon Game. White player it's your turn, Roll The Dices...");
 			gameViewChanges.setMessageToBlack("Hello, and welcome to Arad's Backgammon Game. Black player it's White's turn to play, Please wait...");
+			gameViewChanges.setMessageToWatcher("Hello, and welcome to Arad's Backgammon Game. It's White's turn to play, Please wait...");
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
 			gameView.markNeedToUpdateGroupUsers(gameViewChanges, gameStartedEvent.getGameRoom().getName());

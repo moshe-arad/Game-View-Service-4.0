@@ -49,6 +49,7 @@ public class TurnNotPassedUserMadeMoveEventConsumer extends SimpleEventsConsumer
 			if(turnNotPassedUserMadeMoveEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("White You made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = "+ turnNotPassedUserMadeMoveEvent.getTo() +", turn will keep yours because black does not have play options.");
 				gameViewChanges.setMessageToBlack("White Player made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = " + turnNotPassedUserMadeMoveEvent.getTo() +", White will keep his turn because you do not have play options.");
+				gameViewChanges.setMessageToWatcher("White has made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = "+ turnNotPassedUserMadeMoveEvent.getTo() +", turn will keep to be White's because black does not have play options.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
@@ -59,6 +60,7 @@ public class TurnNotPassedUserMadeMoveEventConsumer extends SimpleEventsConsumer
 			else if(!turnNotPassedUserMadeMoveEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("Black Player made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = " + turnNotPassedUserMadeMoveEvent.getTo() +". Black will keep his turn because you do not have play options.");
 				gameViewChanges.setMessageToBlack("Black You made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = "+ turnNotPassedUserMadeMoveEvent.getTo() +". turn will keep yours because white does not have play options.");
+				gameViewChanges.setMessageToWatcher("Black has made a move, from column = " + turnNotPassedUserMadeMoveEvent.getFrom() + ", to column = "+ turnNotPassedUserMadeMoveEvent.getTo() +". turn will keep to be black's because white does not have play options.");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(true);

@@ -49,8 +49,9 @@ public class TurnNotPassedWhitePawnCameBackAndAteBlackPawnEventConsumer extends 
 		List<BoardItemJson> boardItemJsons = whitePawnCameBackAndAteBlackPawnEvent.getBackgammonBoardJson().getBackgammonItems();
 		
 		try{
-			gameViewChanges.setMessageToWhite("White you successfuly managed to return your white pawn back into the game. Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
-			gameViewChanges.setMessageToBlack("White Player successfuly managed to return your white pawn back into the game. He need to finish play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+			gameViewChanges.setMessageToWhite("White you successfuly managed to return your white pawn back into the game. Turn won't be passed to next player...");
+			gameViewChanges.setMessageToBlack("White Player successfuly managed to return your white pawn back into the game. Turn won't be passed to next player...");
+			gameViewChanges.setMessageToWatcher("White has successfuly managed to return your white pawn back into the game. Turn won't be passed to next player...");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

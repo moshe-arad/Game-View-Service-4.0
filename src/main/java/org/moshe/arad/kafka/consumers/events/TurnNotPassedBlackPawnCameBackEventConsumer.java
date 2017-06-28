@@ -48,6 +48,7 @@ public class TurnNotPassedBlackPawnCameBackEventConsumer extends SimpleEventsCon
 		try{
 			gameViewChanges.setMessageToWhite("Black Player successfuly managed to return your black pawn back into the game. Black will keep his turn because you do not have play options.");
 			gameViewChanges.setMessageToBlack("Black you successfuly managed to return your black pawn back into the game. turn will keep yours because white does not have play options.");
+			gameViewChanges.setMessageToWatcher("Black has successfuly managed to return his black pawn back into the game. turn will keep to be black's because white does not have play options.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(true);

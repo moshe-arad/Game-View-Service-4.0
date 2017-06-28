@@ -46,6 +46,7 @@ public class LoggedOutOpenByLeftFirstGameStoppedEventConsumer extends SimpleEven
 		
 		try{
 			gameViewChanges.setMessageToBlack("Game stopped, White player left the game...");
+			gameViewChanges.setMessageToWatcher("Game stopped, White player left the game...");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

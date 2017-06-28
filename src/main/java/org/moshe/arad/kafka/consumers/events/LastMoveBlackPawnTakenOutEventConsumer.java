@@ -51,6 +51,7 @@ public class LastMoveBlackPawnTakenOutEventConsumer extends SimpleEventsConsumer
 		try{
 			gameViewChanges.setMessageToWhite("Black Player successfuly managed to take out his black pawn out of the game. turn will pass to you.");
 			gameViewChanges.setMessageToBlack("Black you successfuly managed to take out your black pawn out of the game. turn will pass to next player.");
+			gameViewChanges.setMessageToWatcher("Black has successfuly managed to take out his black pawn out of the game. turn will pass to next player.");
 			
 			gameViewChanges.setIsToShowRollDiceBtnToWhite(true);
 			gameViewChanges.setIsToShowRollDiceBtnToBlack(false);

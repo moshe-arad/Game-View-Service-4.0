@@ -49,6 +49,7 @@ public class UserMadeMoveEventConsumer extends SimpleEventsConsumer {
 			if(userMadeMoveEvent.isWhite()){
 				gameViewChanges.setMessageToWhite("White You made a move, from column = " + userMadeMoveEvent.getFrom() + ", to column = "+ userMadeMoveEvent.getTo() +". Earlier you rolled " + firstDice.getValue() + ":" + secondDice.getValue() + ", make your move...");
 				gameViewChanges.setMessageToBlack("White Player made a move, from column = " + userMadeMoveEvent.getFrom() + ", to column = " + userMadeMoveEvent.getTo() +". He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
+				gameViewChanges.setMessageToWatcher("White Player made a move, from column = " + userMadeMoveEvent.getFrom() + ", to column = " + userMadeMoveEvent.getTo() +". He still need to play this dice result " + firstDice.getValue() + ":" + secondDice.getValue() + ", wait for his move...");
 				
 				gameViewChanges.setIsToShowRollDiceBtnToWhite(false);
 				gameViewChanges.setIsToShowRollDiceBtnToBlack(false);
